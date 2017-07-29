@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+        <constant name="struts.devMode" value="true" />
+        <!-- 指定struts2框架中的Action对象由spring工厂负责创建 -->
+        <constant name="struts.objectFactory" value="spring"/>
+        <!--注册struts2框架的国际化文件-->
+        <constant name="struts.custom.i18n.resources" value="message"></constant>
+        <package name="basicstruts2" extends="struts-default">
+                <!-- 1 声明自定义拦截器-->
+                <interceptors>
+                        <!-- 2 在拦截器中使用了注解-->
+                        <interceptor name="loginInterceptor" class="loginInterceptor">
+                                <!-- 3 指定哪些方法不拦截-->
+                                <param name="excludeMethods">login</param>
+                        </interceptor>
+
+                        <!-- 4 自定义一个拦截器栈-->
+                        <interceptor-stack name="bos">
+                                <interceptor-ref name="loginInterceptor"/>
+                                <interceptor-ref name="defaultStack"/>
+                        </interceptor-stack>
+                </interceptors>
+                
+                <!-- 5 指定默认的拦截器-->
+                <default-interceptor-ref name="bos"/>
+                <!--配置全局结果-->
+                <global-results>
+                        <!--跳转到登录页面-->
+                        <result name="login">/login.jsp</result>
+                </global-results>
+
+                <!-- 需要进行权限控制的页面访问 -->
+                <action name="page_*_*">
+                        <result type="dispatcher">/WEB-INF/pages/{1}/{2}.jsp</result>
+                </action>
+        </package>
+
+        <!--user模块-->
+        <include file="struts/struts_user.xml"/>
+        <!--staff模块-->
+        <include file="struts/struts_staff.xml"/>
+        <!--region模块-->
+        <include file="struts/struts_region.xml"/>
+        <!--subarea模块-->
+        <include file="struts/struts_subarea.xml"/>
+        <!--decidedzone模块-->
+        <include file="struts/struts_decidedzone.xml"/>
+        <!--noticebill模块-->
+        <include file="struts/struts_noticebill.xml"/>
+        <!--workordermanage模块-->
+        <include file="struts/struts_workordermanage.xml"/>
+        <!--function模块-->
+        <include file="struts/struts_function.xml"/>
+        <!--role模块-->
+        <include file="struts/struts_role.xml"/>
+        <!--processDefinition模块-->
+        <include file="struts/struts_processDefinition.xml"/>
+        <!--processInstance模块-->
+        <include file="struts/struts_processInstance.xml"/>
+        <!--task模块-->
+        <include file="struts/struts_task.xml"/>
+</struts>

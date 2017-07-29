@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+        <!--staff模块-->
+        <package name="staff" extends="basicstruts2">
+                <!--取派员操作Action-->
+                <action name="staffAction_*" class="staffAction" method="{1}">
+                        <!--跳转到取派员设置的页面-->
+                        <result name="list">/WEB-INF/pages/base/staff.jsp</result>
+                </action>
+        </package>
+</struts>

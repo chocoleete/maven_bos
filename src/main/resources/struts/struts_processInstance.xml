@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+        <!--processInstance模块-->
+        <package name="processInstance" extends="basicstruts2">
+                <!--流程实例管理Action-->
+                <action name="processInstanceAction_*" class="processInstanceAction" method="{1}">
+                        <!--跳转到流程实例管理的页面-->
+                        <result name="list">/WEB-INF/pages/workflow/processinstance.jsp</result>
+                        <!--跳转到显示图片的页面-->
+                        <result name="showPng">/WEB-INF/pages/workflow/image.jsp</result>
+                        <!--配置图片输入流-->
+                        <result name="viewImage" type="stream">
+                                <param name="contentType">image/png</param>
+                                <param name="inputName">pngStream</param>
+                        </result>
+                </action>
+        </package>
+</struts>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+        <!--task模块-->
+        <package name="task" extends="basicstruts2">
+                <!--任务操作Action-->
+                <action name="taskAction_*" class="taskAction" method="{1}">
+                        <!--跳转显示组任务的页面-->
+                        <result name="groupTaskList">/WEB-INF/pages/workflow/grouptask.jsp</result>
+                        <!--重定向到查询组任务的方法-->
+                        <result name="toGroupTaskList" type="redirectAction">
+                                taskAction_findGroupTask
+                        </result>
+                        <!--跳转到显示个人任务的页面-->
+                        <result name="personalTaskList">/WEB-INF/pages/workflow/personaltask.jsp</result>
+                        <!--跳转到审核工作页面-->
+                        <result name="checkUI">/WEB-INF/pages/workflow/check.jsp</result>
+                        <!--重定向到查询个人任务的方法-->
+                        <result name="toPersonalTaskList" type="redirectAction">
+                                taskAction_findPersonalTask
+                        </result>
+                </action>
+        </package>
+</struts>

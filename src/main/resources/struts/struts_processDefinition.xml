@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+        <!--processDefinition模块-->
+        <package name="processDefinition" extends="basicstruts2">
+                <!--流程定义管理Action-->
+                <action name="processDefinitionAction_*" class="processDefinitionAction" method="{1}">
+                        <!--跳转到流程定义管理的页面-->
+                        <result name="list">/WEB-INF/pages/workflow/processdefinition_list.jsp</result>
+                        <!--重定向到processDefinitionAction_list的方法中-->
+                        <result name="toList" type="redirectAction">
+                                processDefinitionAction_list
+                        </result>
+                        <!--查看png流程图片-->
+                        <result name="viewpng" type="stream">
+                                <param name="contentType">image/png</param>
+                                <param name="inputName">pngStream</param>
+                                <!--<param name="contentDisposition">attachment;file</param>
+                                <param name="bufferSize">1024</param>-->
+                        </result>
+                </action>
+        </package>
+</struts>

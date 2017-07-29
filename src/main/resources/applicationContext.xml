@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <!--读取jdbc属性文件-->
+    <context:property-placeholder location="classpath:jdbc.properties"/>
+    <!--配置comboPooledDataSource-->
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <!--<property name="driverClass" value="com.mysql.jdbc.Driver"/>
+        <property name="jdbcUrl" value="jdbc:mysql://192.168.25.128:3306/zjs_bos"/>
+        <property name="user" value="zjs_user"/>
+        <property name="password" value="123456"/>-->
+        <property name="driverClass" value="${driverClass}"/>
+        <property name="jdbcUrl" value="${jdbcUrl}"/>
+        <property name="user" value="${user}"/>
+        <property name="password" value="${password}"/>
+    </bean>
+
+    <!--配置sessionFactory-->
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+        <!--指定数据库信息-->
+        <property name="dataSource" ref="dataSource"/>
+        <!--注入hibernate相关属性-->
+        <property name="hibernateProperties">
+            <props>
+                <!--数据库连接池交由spring配置-->
+                <!--根据配置的方言生成相应的SQL语句-->
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+                <!--Hibernate显示SQL语句-->
+                <prop key="hibernate.show_sql">true</prop>
+                <!--Hibernate格式化SQL语句-->
+                <prop key="hibernate.format_sql">true</prop>
+                <!-- DB schema will be updated if needed -->
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
+                <!--设置事务隔离级别-->
+                <!--<prop key="hibernate.connection.isolation">4</prop>-->
+            </props>
+        </property>
+        <!--注入hbm映射文件-->
+        <!--<property name="mappingDirectoryLocations">
+            <list>
+                <value>classpath:cn/itcast/bos/domain</value>
+            </list>
+        </property>-->
+        <!--指定对哪个实体类进行映射配置-->
+        <!--<property name="packagesToScan" value="cn.itcast.bos.domain"/>-->
+        <property name="packagesToScan" value="cn.itcast.bos.domain"/>
+    </bean>
+
+    <!--配置shiro的bean文件，使用当前工厂bean对象创建过滤器进行鉴权-->
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <!--注入安全管理对象-->
+        <property name="securityManager" ref="securityManager"/>
+        <!--登录页面url地址-->
+        <property name="loginUrl" value="/login.jsp"></property>
+        <!--登录成功页面的url地址-->
+        <property name="successUrl" value="/index.jsp"></property>
+        <!--权限不足提示页面的url地址-->
+        <property name="unauthorizedUrl" value="/unauthorized.jsp"></property>
+        <!--基于url拦截，使用过滤器进行拦截-->
+        <property name="filterChainDefinitions">
+            <value>
+                /css/**=anon
+                /images/**=anon
+                /js/**=anon
+                /validatecode.jsp*=anon
+                /login.jsp=anon
+                /userAction_login.action=anon
+                /page_base_staff.action=perms["staff"]
+                /**=authc
+            </value>
+        </property>
+    </bean>
+    <!--配置安全管理器-->
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <!--注入自定义的realm-->
+        <property name="realm" ref="bosRealm"/>
+        <!--注入缓存管理器-->
+        <property name="cacheManager" ref="cacheManager"/>
+    </bean>
+
+    <!--缓存管理器-->
+    <bean id="cacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+        <!--配置文件地址-->
+        <property name="cacheManagerConfigFile" value="classpath:ehcache.xml"/>
+    </bean>
+
+    <!--配置自定义的realm-->
+    <bean id="bosRealm" class="cn.itcast.bos.shiro.BOSRealm"/>
+
+    <!--自动代理,可不配置id-->
+    <bean id="defaultAdvisorAutoProxyCreator" class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator">
+        <!--使用cglib创建代理-->
+        <property name="proxyTargetClass" value="true"/>
+    </bean>
+    <!--切面类,可不配置id-->
+    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor"/>
+
+    <!--配置hibernateTemplate
+    如果dao继承了HibernateDaoSupport则不用再配置此对象
+    且dao中也不用注入hibernateTemplate对象
+    使用注解方式时dao不要继承HibernateDaoSupport
+    直接注入sessionFactory即可-->
+    <!--<bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">
+    &lt;!&ndash;注入sessionFactory&ndash;&gt;
+    <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>-->
+
+    <!--配置userAction对象-->
+
+
+    <!--配置customerAction-->
+
+
+    <!--配置linkManAction-->
+
+
+    <!--配置visitAction-->
+
+
+    <!--配置事务管理-->
+    <bean id="hibernateTransactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+        <!--注入sessionFactory-->
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    <!--开启注解扫描-->
+    <context:component-scan base-package="cn.itcast.bos"/>
+    <!--支持spring注解(引入spring提供的注解解析器)-->
+    <context:annotation-config/>
+
+    <!--开启事务注解-->
+    <tx:annotation-driven transaction-manager="hibernateTransactionManager"/>
+
+
+    <!-- 配置远程服务的代理对象 -->
+    <bean id="customerService" class="org.springframework.remoting.caucho.HessianProxyFactoryBean">
+        <!--注入接口类型-->
+        <property name="serviceInterface" value="cn.itcast.crm.service.CustomerService"/>
+        <!--注入服务的url地址-->
+        <property name="serviceUrl" value="http://localhost:8089/maven_crm/remoting/customer"/>
+    </bean>
+
+
+    <!--配置一个流程引擎配置对象-->
+    <bean id="processEngineConfiguration" class="org.activiti.spring.SpringProcessEngineConfiguration">
+        <!--注入数据源-->
+        <property name="dataSource" ref="dataSource"/>
+        <!--注入事务管理器就是上面id="hibernateTransactionManager"的事务管理器-->
+        <property name="transactionManager" ref="hibernateTransactionManager"/>
+        <!--自动建表-->
+        <property name="databaseSchemaUpdate" value="true"/>
+    </bean>
+
+    <!--配置一个流程引擎工厂bean,用于创建流程引擎对象-->
+    <bean id="processEngine" class="org.activiti.spring.ProcessEngineFactoryBean">
+        <!--注入流程引擎配置对象-->
+        <property name="processEngineConfiguration" ref="processEngineConfiguration"/>
+    </bean>
+
+    <!--使用流程引擎对象获取RepositoryService对象-->
+    <bean id="repositoryService" factory-bean="processEngine" factory-method="getRepositoryService"/>
+
+</beans>

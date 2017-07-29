@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+        <!--user模块-->
+        <package name="user" extends="basicstruts2">
+                <!--用户操作Action-->
+                <action name="userAction_*" class="userAction" method="{1}">
+                        <!--跳转到主页-->
+                        <result name="home">/WEB-INF/pages/common/index.jsp</result>
+                        <result name="list">/WEB-INF/pages/admin/userlist.jsp</result>
+                </action>
+        </package>
+</struts>

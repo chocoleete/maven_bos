@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+        <!--workordermanage模块-->
+        <package name="workordermanager" extends="basicstruts2">
+                <!--分区操作Action-->
+                <action name="workordermanageAction_*" class="workordermanageAction" method="{1}">
+                        <!--跳转到展示流程的页面-->
+                        <result name="list">/WEB-INF/pages/workflow/startransfer.jsp</result>
+                        <result name="toList" type="redirectAction">
+                                workordermanageAction_list
+                        </result>
+                </action>
+        </package>
+</struts>

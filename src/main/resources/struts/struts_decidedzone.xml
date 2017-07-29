@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE struts PUBLIC
+        "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+        "http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+        <!--decidedzone模块-->
+        <package name="decidedzone" extends="basicstruts2">
+                <!--分区操作Action-->
+                <action name="decidedzoneAction_*" class="decidedzoneAction" method="{1}">
+                        <!--跳转到定区设置的页面-->
+                        <result name="list">/WEB-INF/pages/base/decidedzone.jsp</result>
+                </action>
+        </package>
+</struts>
