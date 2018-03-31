@@ -14,10 +14,6 @@
     <context:property-placeholder location="classpath:jdbc.properties"/>
     <!--配置comboPooledDataSource-->
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
-        <!--<property name="driverClass" value="com.mysql.jdbc.Driver"/>
-        <property name="jdbcUrl" value="jdbc:mysql://192.168.25.128:3306/zjs_bos"/>
-        <property name="user" value="zjs_user"/>
-        <property name="password" value="123456"/>-->
         <property name="driverClass" value="${driverClass}"/>
         <property name="jdbcUrl" value="${jdbcUrl}"/>
         <property name="user" value="${user}"/>
