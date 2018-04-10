@@ -29,7 +29,7 @@ import java.util.List;
 @SuppressWarnings("all")
 public class BaseDaoImpl<T> extends HibernateDaoSupport implements IBaseDao<T> {
     //注入sessionFactory
-    @Resource
+    @Resource(name = "sessionFactory")
     public void setSFactory(SessionFactory sessionFactory) {
         //调用父类的方法注入会话工厂对象
         super.setSessionFactory(sessionFactory);
