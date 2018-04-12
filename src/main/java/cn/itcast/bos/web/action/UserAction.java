@@ -156,7 +156,7 @@ public class UserAction extends BaseAction<User> {
             String username=model.getUsername();//获得用户名
             String password=model.getPassword();//获得密码
             password = MD5Utils.md5(password);//给密码加密
-            AuthenticationToken token=new UsernamePasswordToken(username,password);
+            AuthenticationToken token = new UsernamePasswordToken(username, password);
             try {
                 subject.login(token);//调用安全管理器，安全管理器调用Realm
                 User user = (User) subject.getPrincipal();//获取BOSRealm中存入的User对象

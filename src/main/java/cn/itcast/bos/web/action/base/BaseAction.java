@@ -53,7 +53,7 @@ public class BaseAction<T> extends ActionSupport implements ModelDriven<T> {
         if (type instanceof ParameterizedType) {
             genericSuperclass = (ParameterizedType) type;
         } else {
-            genericSuperclass = (ParameterizedType)this.getClass().getSuperclass().getGenericSuperclass();
+            genericSuperclass = (ParameterizedType) this.getClass().getSuperclass().getGenericSuperclass();
         }
         //获得父类上的泛型数组
         Type[] actualTypeArguments = genericSuperclass.getActualTypeArguments();
