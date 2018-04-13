@@ -34,24 +34,24 @@ public class BOSLoginInterceptor extends MethodFilterInterceptor {
     //拦截的方法
     @Override
     protected String doIntercept(ActionInvocation invocation) throws Exception {
-        System.out.println("执行自定义拦截器...");
+        //System.out.println("执行自定义拦截器...");
 
-        //获取request response
+        // 获取request response
         HttpServletRequest request = BOSContext.getRequestFun();
         HttpServletResponse response = BOSContext.getResponseFun();
-        //获取session
+        // 获取session
         HttpSession session = BOSContext.getSessionFun();
 
-        //从session中获取当前用户
+        // 从session中获取当前用户
         User loginUser = BOSContext.getLoginUser("loginUser");
-        //判断session中是否有值
+        // 判断session中是否有值
         if (loginUser == null) {
 
-            //获取cookie
+            // 获取cookie
             Cookie cookie = CookieUtils.findCookie(request.getCookies(), "autoLogin");
             if (cookie != null) {
                 String username = cookie.getValue().split("#")[0];
-                String password = cookie.getValue().split("#")[1];//密码已经加密
+                String password = cookie.getValue().split("#")[1];// 密码已经加密
 
                 //使用shiro提供的方式进行权限证
                 Subject subject = SecurityUtils.getSubject();//获得当前用户对象，现在状态为“未认证”

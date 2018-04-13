@@ -15,7 +15,10 @@ public class AutoLoginAndRemember {
     /**
      * 自动登录
      * 返回值类型 void
-     * 参数列表 (HttpServletRequest request,HttpServletResponse response,String autoLoginKey,User user)
+     * @param request
+     * @param response
+     * @param autoLoginKey
+     * @param user
      */
     public static void autoLogin(HttpServletRequest request,HttpServletResponse response,String autoLoginKey,User user) {
         /**
@@ -35,7 +38,10 @@ public class AutoLoginAndRemember {
     /**
      * 记住用户名
      * 返回值类型 void
-     * 参数列表(HttpServletRequest request,HttpServletResponse response,String rememberKey,User user)
+     * @param request
+     * @param response
+     * @param rememberKey
+     * @param user
      */
     public static void rememberUserName(HttpServletRequest request,HttpServletResponse response,String rememberKey,User user) {
         String remember = request.getParameter(rememberKey);

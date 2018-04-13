@@ -135,31 +135,31 @@ public class UserAction extends BaseAction<User> {
      * 用户登录的方法
      */
     public String login() {
-        //从session中获取生成的验证码
+        // 从session中获取生成的验证码
         HttpServletRequest request = ServletActionContext.getRequest();
         HttpServletResponse response = ServletActionContext.getResponse();
 
-        HttpSession session = request.getSession();//获得session
-        String validateCode = (String) session.getAttribute("key");//得到session中存的验证码
+        HttpSession session = request.getSession();// 获得session
+        String validateCode = (String) session.getAttribute("key");// 得到session中存的验证码
 
-//        System.out.println("session中的验证码:"+validateCode);
-//        System.out.println("页面传来的验证码:"+checkcode);
-        //确定验证码输入是否正确
+        // System.out.println("session中的验证码:"+validateCode);
+        // System.out.println("页面传来的验证码:"+checkcode);
+        // 确定验证码输入是否正确
         if (StringUtils.isBlank(checkcode) || !checkcode.equals(validateCode)) {
-            //验证码输入错误，跳转到登录页面，提示错误信息
-//            this.addActionError("验证码输入有误！");//为便于后期更改提示内容，将“验证码输入有误”用配置文件显示
+            // 验证码输入错误，跳转到登录页面，提示错误信息
+            // this.addActionError("验证码输入有误！");//为便于后期更改提示内容，将“验证码输入有误”用配置文件显示
             this.addActionError(this.getText("checkCodeError"));
             return "login";
         } else {
-            //使用shiro提供的方式进行权限证
-            Subject subject = SecurityUtils.getSubject();//获得当前用户对象，现在状态为“未认证”
-            String username=model.getUsername();//获得用户名
-            String password=model.getPassword();//获得密码
-            password = MD5Utils.md5(password);//给密码加密
+            // 使用shiro提供的方式进行权限证
+            Subject subject = SecurityUtils.getSubject();// 获得当前用户对象，现在状态为“未认证”
+            String username=model.getUsername();// 获得用户名
+            String password=model.getPassword();// 获得密码
+            password = MD5Utils.md5(password);// 给密码加密
             AuthenticationToken token = new UsernamePasswordToken(username, password);
             try {
-                subject.login(token);//调用安全管理器，安全管理器调用Realm
-                User user = (User) subject.getPrincipal();//获取BOSRealm中存入的User对象
+                subject.login(token);// 调用安全管理器，安全管理器调用Realm
+                User user = (User) subject.getPrincipal();// 获取BOSRealm中存入的User对象
 
                 /**
                  * 自动登录
@@ -171,15 +171,15 @@ public class UserAction extends BaseAction<User> {
                  */
                 AutoLoginAndRemember.rememberUserName(request,response,"remember",user);
 
-                //登录成功，将user放入session,跳转到系统首页
+                // 登录成功，将user放入session,跳转到系统首页
                 session.setAttribute("loginUser", user);
             } catch (UnknownAccountException e) {
-                //用户名不存在，跳转到登录页面
+                // 用户名不存在，跳转到登录页面
                 this.addActionError("用户名不存在！");
                 e.printStackTrace();
                 return "login";
             } catch (IncorrectCredentialsException e) {
-                //密码错误，跳转到登录页面
+                // 密码错误，跳转到登录页面
                 this.addActionError("密码错误！");
                 e.printStackTrace();
                 return "login";
@@ -193,26 +193,26 @@ public class UserAction extends BaseAction<User> {
      * 用户登录的方法备份
      */
     public String login_bak() {
-        //从session中获取生成的验证码
+        // 从session中获取生成的验证码
         HttpServletRequest request = ServletActionContext.getRequest();
         HttpServletResponse response = ServletActionContext.getResponse();
 
         HttpSession session = request.getSession();//获得session
         String validateCode = (String) session.getAttribute("key");//得到session中存的验证码
 
-//        System.out.println("session中的验证码:"+validateCode);
-//        System.out.println("页面传来的验证码:"+checkcode);
-        //确定验证码输入是否正确
+        // System.out.println("session中的验证码:"+validateCode);
+        // System.out.println("页面传来的验证码:"+checkcode);
+        // 确定验证码输入是否正确
         if (StringUtils.isBlank(checkcode) || !checkcode.equals(validateCode)) {
-            //验证码输入错误，跳转到登录页面，提示错误信息
-//            this.addActionError("验证码输入有误！");//为便于后期更改提示内容，将“验证码输入有误”用配置文件显示
+            // 验证码输入错误，跳转到登录页面，提示错误信息
+            // this.addActionError("验证码输入有误！");//为便于后期更改提示内容，将“验证码输入有误”用配置文件显示
             this.addActionError(this.getText("checkCodeError"));
             return "login";
         } else {
-            //验证码输入正确 进行登录校验
-//            System.out.println(model.getUsername() + ":" + model.getPassword());
+            // 验证码输入正确 进行登录校验
+            // System.out.println(model.getUsername() + ":" + model.getPassword());
             User user = userService.login(model);
-            //对user进行判断
+            // 对user进行判断
             if (user != null) {
 
                 /**
@@ -225,11 +225,11 @@ public class UserAction extends BaseAction<User> {
                  */
                 AutoLoginAndRemember.rememberUserName(request,response,"remember",user);
 
-                //登录成功，将user放入session，跳转到系统首页
+                // 登录成功，将user放入session，跳转到系统首页
                 session.setAttribute("loginUser", user);
                 return "home";
             } else {
-                //登录失败，跳转到登录页面，设置登录失败的错误提示信息
+                // 登录失败，跳转到登录页面，设置登录失败的错误提示信息
                 this.addActionError(this.getText("loginFail"));
                 return "login";
             }

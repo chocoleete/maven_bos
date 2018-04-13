@@ -20,19 +20,34 @@
         $(function(){
             <%--show--%>
             $.messager.show({
-                title:'提示信息',//标题
-                msg:'欢迎您登录BOS系统',//信息
-                timeout:3000,//3秒后自动消失
-                showType:'slide'//显示方式
+                title:'提示信息',// 标题
+                msg:'欢迎您登录BOS系统',// 信息
+                timeout:3000,// 3秒后自动消失
+                showType:'slide'// 显示方式
             });
             /*alert*/
 //            $.messager.alert('我的消息','这是一个提示信息！','question');
             /*confirm-确认提示框*/
-            $.messager.confirm('确认对话框', '您想要退出该系统吗？', function(r){
+           /* $.messager.confirm('确认对话框', '您想要退出该系统吗？', function(r){
                 if (r){
                     alert(r);
                 }
-            });
+            });*/
+
+            // prompt
+            /*$.messager.prompt('标题','请输入您的姓名',function(data){
+                if (data){
+                    alert('您的姓名：' + data);
+                }
+            });*/
+
+            // progress
+            $.messager.progress();
+
+            // 3秒后关闭
+            window.setTimeout(function () {
+                $.messager.progress('close');
+            }, 3000);
         });
     </script>
 </head>
