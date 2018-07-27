@@ -81,23 +81,23 @@ public class UserAction extends BaseAction<User> {
      * 修改密码
      */
     public String editPassword() throws IOException {
-        //先判断原密码是否正确
+        // 先判断原密码是否正确
         String password = model.getPassword();
-//        System.out.println("原密码="+password);
-        //从session中获得用户名
+        // System.out.println("原密码="+password);
+        // 从session中获得用户名
         User loginUser = BOSContext.getLoginUser("loginUser");
         String username = loginUser.getUsername();
-//        System.out.println("用户名="+username);
-//        System.out.println("新密码="+passwordNew);
-        //先创建一个user对象checkUser将用户名和原密码封装进去，在service层调用查询用户名及密码得到一个user对象existUser
+        // System.out.println("用户名="+username);
+        // System.out.println("新密码="+passwordNew);
+        // 先创建一个user对象checkUser将用户名和原密码封装进去，在service层调用查询用户名及密码得到一个user对象existUser
         User checkUser = new User();
         checkUser.setUsername(username);//封装用户名
         checkUser.setPassword(password);//封闭原密码
         User existUser = userService.check(checkUser);
-        //判断existUser是否存在，如果存在，再更改密码
+        // 判断existUser是否存在，如果存在，再更改密码
         if (existUser != null) {
-            //定义标记变量
-            boolean flag = true;//默认值为true
+            // 定义标记变量
+            boolean flag = true;// 默认值为true
             String id = loginUser.getId();
             try {
                 userService.editPassword(id, passwordNew);

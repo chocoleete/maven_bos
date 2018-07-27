@@ -17,9 +17,9 @@ public class BOSContext {
      * 参数列表String key
      */
     public static User getLoginUser(String key) {
-        //获取session
+        // 获取session
         HttpSession session = getSessionFun();
-        //判断session中是否有值
+        // 判断session中是否有值
         User existUser = (User)session.getAttribute(key);
         return existUser;
     }

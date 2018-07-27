@@ -93,15 +93,16 @@
 			$('#editPwdWindow').window('close');
 		});
 
-		//为确定按钮绑定事件 --完成修改密码的功能
+		// 为确定按钮绑定事件 --完成修改密码的功能
 		$("#btnEp").click(function(){
 //			alert("修改密码");
-			var v = $("#editForm").form("validate");//验证指定id的表单的所有输入项，如果验证通过返回true,如果验证不通过返回false
+			// 验证指定id的表单的所有输入项，如果验证通过返回true,如果验证不通过返回false
+			var v = $("#editForm").form("validate");
 			if(v) {
 				//验证通过
-				var v0 = $("#txtOldPass").val();//原密码的值
-				var v1 = $("#txtNewPass").val();//新密码的值
-				var v2 = $("#txtRePass").val();//确定密码的值
+				var v0 = $("#txtOldPass").val();// 原密码的值
+				var v1 = $("#txtNewPass").val();// 新密码的值
+				var v2 = $("#txtRePass").val();// 确定密码的值
 				if(v1==v2) {
 					//新密码确认后提交ajax
 					var url = "${pageContext.request.contextPath}/userAction_editPassword.action";
