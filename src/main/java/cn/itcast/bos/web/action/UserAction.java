@@ -36,21 +36,21 @@ public class UserAction extends BaseAction<User> {
     //注入userService
     @Resource(name = "userService")
     private IUserService userService;
-    //属性封装接收验证码
+    // 属性封装接收验证码
     private String checkcode;
 
     public void setCheckcode(String checkcode) {
         this.checkcode = checkcode;
     }
 
-    //属性封装接收新密码
+    // 属性封装接收新密码
     private String passwordNew;
 
     public void setPasswordNew(String passwordNew) {
         this.passwordNew = passwordNew;
     }
 
-    //属性封装roleIds
+    // 属性封装roleIds
     private String[] roleIds;
 
     public void setRoleIds(String[] roleIds) {

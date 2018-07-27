@@ -28,22 +28,25 @@ import java.util.List;
  */
 @SuppressWarnings("all")
 public class BaseDaoImpl<T> extends HibernateDaoSupport implements IBaseDao<T> {
-    //注入sessionFactory
+    // 注入sessionFactory
     @Resource(name = "sessionFactory")
     public void setSFactory(SessionFactory sessionFactory) {
-        //调用父类的方法注入会话工厂对象
+        // 调用父类的方法注入会话工厂对象
         super.setSessionFactory(sessionFactory);
     }
-    //定义一个属性，表示实体的类型
+
+    // 定义一个属性，表示实体的类型
     private Class<T> domainClass;
 
-    //在构造方法中动态获取实体类型
+    /**
+     * 在构造方法中动态获取实体类型
+     */
     public BaseDaoImpl() {
-        //获得父类类型，向下转型成ParameterizedType
+        // 获得父类类型，向下转型成ParameterizedType
         ParameterizedType genericSuperclass = (ParameterizedType) this.getClass().getGenericSuperclass();
-        //获得父类上的泛型数组
+        // 获得父类上的泛型数组
         Type[] actualTypeArguments = genericSuperclass.getActualTypeArguments();
-        //由于只有一个泛型将其赋值给domainClass 获得实体类型
+        // 由于只有一个泛型将其赋值给domainClass 获得实体类型
         domainClass = (Class<T>) actualTypeArguments[0];
     }
 
@@ -139,27 +142,27 @@ public class BaseDaoImpl<T> extends HibernateDaoSupport implements IBaseDao<T> {
      */
     @Override
     public void pageQuery(PageBean pageBean) {
-        //当前页面
+        // 当前页面
         Integer currentPage = pageBean.getCurrentPage();
-        //每页显示记录数
+        // 每页显示记录数
         Integer pageSize = pageBean.getPageSize();
-        //离线条件查询对象
+        // 离线条件查询对象
         DetachedCriteria detachedCriteria = pageBean.getDetachedCriteria();
 
-        //查询总记录数,指定hibernate框架发出select count(id) from xxx where ...统计数据量的sql
+        // 查询总记录数,指定hibernate框架发出select count(id) from xxx where ...统计数据量的sql
         detachedCriteria.setProjection(Projections.rowCount());
         List<Long> list = (List<Long>) this.getHibernateTemplate().findByCriteria(detachedCriteria);
         Long total = list.get(0);//总记录数
 
-        //查询当前页展示的数据集合,指定hibernate框架发出select * from xxx where
+        // 查询当前页展示的数据集合,指定hibernate框架发出select * from xxx where
         detachedCriteria.setProjection(null);//重置
-        //指定hibernate框架将从数据库是查询的每一行数据封装成一个实体类对象
+        // 指定hibernate框架将从数据库是查询的每一行数据封装成一个实体类对象
         detachedCriteria.setResultTransformer(DetachedCriteria.ROOT_ENTITY);
         Integer firstResult = (currentPage - 1) * pageSize;
         Integer maxResult = pageSize;
         List recordList = this.getHibernateTemplate().findByCriteria(detachedCriteria, firstResult, maxResult);
 
-        //将查询到的数据封装到pageBean
+        // 将查询到的数据封装到pageBean
         pageBean.setTotal(total.intValue());
         pageBean.setRows(recordList);
     }

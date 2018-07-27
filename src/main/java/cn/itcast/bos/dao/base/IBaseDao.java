@@ -29,16 +29,16 @@ public interface IBaseDao<T> {
     /**
      * 查
      */
-    //根据id查询
+    // 根据id查询
     public T findById(Serializable id);
 
-    //查询所有
+    // 查询所有
     public List<T> findAll();
 
-    //根据条件查询
+    // 根据条件查询
     public List<T> findByCriteria(DetachedCriteria criteria);
 
-    //根据命名查询语句查询
+    // 根据命名查询语句查询
     public List<T> findByNamedQuery(String queryName, Object... args);
 
     /**

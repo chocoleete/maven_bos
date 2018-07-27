@@ -20,7 +20,7 @@ import java.util.List;
  */
 @SuppressWarnings(value = "all")
 public class BaseAction<T> extends ActionSupport implements ModelDriven<T> {
-    //声明模型对象 便于子类方便取值权限修饰符为protected
+    // 声明模型对象 便于子类方便取值权限修饰符为protected
     protected T model;
 
     @Override
@@ -28,40 +28,40 @@ public class BaseAction<T> extends ActionSupport implements ModelDriven<T> {
         return model;
     }
 
-    //抽取pageBean
+    // 抽取pageBean
     protected PageBean pageBean = new PageBean();
 
     public void setRows(Integer rows) {
-        //封装从页面传来的每页显示的记录数
+        // 封装从页面传来的每页显示的记录数
         pageBean.setPageSize(rows);
     }
 
     public void setPage(Integer page) {
-        //封装从页面传来的当前页码
+        // 封装从页面传来的当前页码
         pageBean.setCurrentPage(page);
     }
 
-    //使用离线条件查询对象包装查询条件
+    // 使用离线条件查询对象包装查询条件
     protected DetachedCriteria detachedCriteria;
 
-    //在构造方法中动态得到实体的类型，并通过反射实例化model对象
+    // 在构造方法中动态得到实体的类型，并通过反射实例化model对象
     public BaseAction() {
-        //获得父类类型(BaseAction<T>)，向下转型成ParameterizedType
+        // 获得父类类型(BaseAction<T>)，向下转型成ParameterizedType
         ParameterizedType genericSuperclass = null;
         Type type = this.getClass().getGenericSuperclass();
-        //判断有没有泛型
+        // 判断有没有泛型
         if (type instanceof ParameterizedType) {
             genericSuperclass = (ParameterizedType) type;
         } else {
             genericSuperclass = (ParameterizedType) this.getClass().getSuperclass().getGenericSuperclass();
         }
-        //获得父类上的泛型数组
+        // 获得父类上的泛型数组
         Type[] actualTypeArguments = genericSuperclass.getActualTypeArguments();
-        //由于只有一个泛型将其赋值给domainClass 获得实体类型
+        // 由于只有一个泛型将其赋值给domainClass 获得实体类型
         Class<T> domainClass = (Class<T>) actualTypeArguments[0];
-        //在构造方法中动态创建离线条件查询对象
+        // 在构造方法中动态创建离线条件查询对象
         detachedCriteria = DetachedCriteria.forClass(domainClass);
-        //封装离线条件查询对象
+        // 封装离线条件查询对象
         pageBean.setDetachedCriteria(detachedCriteria);
         try {
             model = domainClass.newInstance();
